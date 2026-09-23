@@ -34,5 +34,5 @@ $plugin->release   = '0.1';
 // The figures come from local_coursesoverview so that the course page and the
 // participants list can never disagree about the same course.
 $plugin->dependencies = [
-    'local_coursesoverview' => 2026092301,
+    'local_coursesoverview' => 2026092302,
 ];

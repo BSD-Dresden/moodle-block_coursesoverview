@@ -115,7 +115,7 @@ class view {
             return '';
         }
 
-        [$groupids, $groupnames] = self::visible_groups($course, $context);
+        [$groupids, $groupnames] = helper::visible_groups($context);
 
         $namefields = \core_user\fields::for_name()->get_sql('u', false, '', '', false)->selects;
         $participants = get_enrolled_users(
@@ -280,42 +280,6 @@ class view {
         }
 
         return $steps;
-    }
-
-    /**
-     * The groups an organiser may look at.
-     *
-     * Somebody who holds accessallgroups sees the whole course. Somebody who
-     * is in groups sees those groups, which is what keeps one customer's
-     * departments apart inside a shared course. Somebody in no group at all
-     * looks after the course as a whole and sees everybody.
-     *
-     * @param stdClass $course
-     * @param context_course $context
-     * @return array [group ids for get_enrolled_users, group names to display]
-     */
-    protected static function visible_groups(stdClass $course, context_course $context): array {
-        global $USER;
-
-        if (has_capability('moodle/site:accessallgroups', $context)) {
-            return [0, []];
-        }
-
-        $groups = groups_get_all_groups($course->id, $USER->id);
-
-        if (empty($groups)) {
-            return [0, []];
-        }
-
-        $ids = [];
-        $names = [];
-
-        foreach ($groups as $group) {
-            $ids[] = (int) $group->id;
-            $names[] = format_string($group->name, true, ['context' => $context]);
-        }
-
-        return [$ids, $names];
     }
 
     /**
