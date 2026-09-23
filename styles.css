@@ -1,0 +1,70 @@
+/*
+ * Styling for block_coursesoverview.
+ *
+ * The three cell colours carry the meaning of the bar, so they are stated
+ * here rather than borrowed from the theme: green is done, red is open and
+ * doable now, grey is not unlocked yet. They match the row colours in
+ * local_coursesoverview\helper::colors() closely enough to read as one family.
+ *
+ * The block sits in a content region above the course content as well as in
+ * the side drawer, so everything below has to survive a column that is either
+ * 300 pixels or the full page width. Hence the flexible cells.
+ */
+
+.block_coursesoverview .cov-bar {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 0.5rem;
+}
+
+.block_coursesoverview .cov-cell {
+    flex: 1 1 0;
+    min-width: 6px;
+    height: 20px;
+    border-radius: 2px;
+}
+
+.block_coursesoverview .cov-done {
+    background-color: #6aa84f;
+}
+
+.block_coursesoverview .cov-open {
+    background-color: #cc4125;
+}
+
+.block_coursesoverview .cov-locked {
+    background-color: #d5d5d5;
+}
+
+.block_coursesoverview .cov-figure {
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+}
+
+.block_coursesoverview .cov-next,
+.block_coursesoverview .cov-deadline,
+.block_coursesoverview .cov-scope,
+.block_coursesoverview .cov-links,
+.block_coursesoverview .cov-openhead {
+    margin-bottom: 0.25rem;
+}
+
+.block_coursesoverview .cov-deadline,
+.block_coursesoverview .cov-scope {
+    font-size: 0.9em;
+}
+
+.block_coursesoverview .cov-openlist {
+    list-style: none;
+    margin-bottom: 0.25rem;
+    padding-left: 0;
+}
+
+.block_coursesoverview .cov-openlist li {
+    padding: 0.1rem 0;
+}
+
+.block_coursesoverview .cov-count {
+    color: #555;
+    white-space: nowrap;
+}
