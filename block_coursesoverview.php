@@ -98,8 +98,10 @@ class block_coursesoverview extends block_base {
         $context = context_course::instance($course->id);
 
         $own = '';
-        if (is_enrolled($context, $USER, '', true)
-                && has_capability('moodle/course:isincompletionreports', $context)) {
+        if (
+            is_enrolled($context, $USER, '', true)
+            && has_capability('moodle/course:isincompletionreports', $context)
+        ) {
             $own = view::participant($course);
         }
 
