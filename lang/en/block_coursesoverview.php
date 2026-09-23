@@ -43,3 +43,4 @@ $string['stillopen'] = 'Still open:';
 $string['summary'] = '{$a->done} of {$a->total} participants have finished.';
 $string['titleorganiser'] = 'Progress of participants';
 $string['titleparticipant'] = 'Your progress';
+$string['wholecourse'] = 'the whole course';

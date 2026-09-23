@@ -163,13 +163,18 @@ class view {
             ['class' => 'cov-figure']
         );
 
-        if ($groupnames) {
-            $out .= html_writer::tag(
-                'p',
-                get_string('groupscope', 'block_coursesoverview', s(implode(', ', $groupnames))),
-                ['class' => 'cov-scope']
-            );
-        }
+        // The scope is always stated, never left to be inferred. Seeing the
+        // whole course looks exactly like seeing one group until it says so,
+        // and somebody who was forgotten when groups were handed out would
+        // otherwise never notice they are looking at every department.
+        $scope = $groupnames
+            ? implode(', ', $groupnames)
+            : get_string('wholecourse', 'block_coursesoverview');
+        $out .= html_writer::tag(
+            'p',
+            get_string('groupscope', 'block_coursesoverview', s($scope)),
+            ['class' => 'cov-scope']
+        );
 
         if ($open) {
             $items = [];
