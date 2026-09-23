@@ -68,3 +68,13 @@
     color: #555;
     white-space: nowrap;
 }
+
+.block_coursesoverview .cov-heading {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-top: 1rem;
+}
+
+.block_coursesoverview .cov-heading:first-child {
+    margin-top: 0;
+}

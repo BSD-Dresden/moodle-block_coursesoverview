@@ -64,12 +64,17 @@ class block_coursesoverview extends block_base {
     }
 
     /**
-     * Build whichever of the two views the viewer is entitled to.
+     * Build whichever views the viewer is entitled to.
      *
-     * Organisers are decided by local/coursesoverview:view in this course,
-     * the same capability that opens the participants list. Everybody else
-     * who is actually enrolled sees their own progress, and anybody else
-     * sees nothing at all, which leaves the block hidden.
+     * The two are not exclusive. local/coursesoverview:view in this course
+     * makes somebody an organiser, and holding moodle/course:isincompletionreports
+     * makes them a participant whose own completion is tracked -- the same
+     * test the participants list uses to decide who belongs in the table.
+     * Somebody who is both, which happens where a department head sits the
+     * course as well as supervising it, gets both and loses neither.
+     *
+     * Anybody who is neither sees nothing at all, which leaves the block
+     * hidden rather than empty.
      *
      * @return stdClass
      */
@@ -92,18 +97,46 @@ class block_coursesoverview extends block_base {
 
         $context = context_course::instance($course->id);
 
-        if (has_capability('local/coursesoverview:view', $context)) {
-            $this->title = get_string('titleorganiser', 'block_coursesoverview');
-            $this->content->text = view::organiser($course, $context);
-
-            return $this->content;
+        $own = '';
+        if (is_enrolled($context, $USER, '', true)
+                && has_capability('moodle/course:isincompletionreports', $context)) {
+            $own = view::participant($course);
         }
 
-        if (is_enrolled($context, $USER, '', true)) {
+        $group = '';
+        if (has_capability('local/coursesoverview:view', $context)) {
+            $group = view::organiser($course, $context);
+        }
+
+        if ($own !== '' && $group !== '') {
+            // Two sections in one block need saying which is which. On their
+            // own, the block title already does that job.
+            $this->title = get_string('pluginname', 'block_coursesoverview');
+            $this->content->text =
+                $this->heading('titleparticipant') . $own .
+                $this->heading('titleorganiser') . $group;
+        } else if ($group !== '') {
+            $this->title = get_string('titleorganiser', 'block_coursesoverview');
+            $this->content->text = $group;
+        } else if ($own !== '') {
             $this->title = get_string('titleparticipant', 'block_coursesoverview');
-            $this->content->text = view::participant($course);
+            $this->content->text = $own;
         }
 
         return $this->content;
+    }
+
+    /**
+     * A subheading for one of the two sections.
+     *
+     * @param string $key language string key
+     * @return string HTML
+     */
+    protected function heading(string $key): string {
+        return html_writer::tag(
+            'h6',
+            get_string($key, 'block_coursesoverview'),
+            ['class' => 'cov-heading']
+        );
     }
 }
